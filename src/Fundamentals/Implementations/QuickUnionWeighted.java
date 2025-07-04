@@ -3,16 +3,20 @@ package Fundamentals.Implementations;
 import Fundamentals.Clients.UnionFindClient;
 import Fundamentals.Interfaces.IUnionFind;
 
-public class QuickUnion implements IUnionFind {
+public class QuickUnionWeighted implements IUnionFind {
     private int[] ids;
+    private int[] szs;
     private int count;
 
     public void init(int count) {
         this.count = count;
         this.ids = new int[count];
+        this.szs = new int[count];
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) {
             ids[i] = i;
+            szs[i] = 1;
+        }
     }
 
     public void union(int p, int q) {
@@ -22,7 +26,14 @@ public class QuickUnion implements IUnionFind {
         if (pRoot == qRoot)
             return;
 
-        ids[pRoot] = qRoot;
+        if (szs[pRoot] < szs[qRoot]) {
+            ids[pRoot] = qRoot;
+            szs[qRoot] += szs[pRoot];
+        } else {
+            ids[qRoot] = pRoot;
+            szs[pRoot] += szs[qRoot];
+        }
+        // ids[pRoot] = qRoot;
 
         count--;
     }
@@ -42,6 +53,6 @@ public class QuickUnion implements IUnionFind {
     }
 
     public static void main(String[] args) {
-        new UnionFindClient(new QuickUnion()).Run("data/largeUF.txt");
+        new UnionFindClient(new QuickUnionWeighted()).Run("data/largeUF.txt");
     }
 }

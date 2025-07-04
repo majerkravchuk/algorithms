@@ -3,7 +3,7 @@ package Fundamentals.Implementations;
 import Fundamentals.Clients.UnionFindClient;
 import Fundamentals.Interfaces.IUnionFind;
 
-public class QuickUnion implements IUnionFind {
+public class QuickFind implements IUnionFind {
     private int[] ids;
     private int count;
 
@@ -16,21 +16,21 @@ public class QuickUnion implements IUnionFind {
     }
 
     public void union(int p, int q) {
-        int pRoot = find(p);
-        int qRoot = find(q);
+        int pId = find(p);
+        int qId = find(q);
 
-        if (pRoot == qRoot)
+        if (pId == qId)
             return;
 
-        ids[pRoot] = qRoot;
+        for (int i = 0; i < ids.length; i++)
+            if (ids[i] == pId)
+                ids[i] = qId;
 
         count--;
     }
 
     public int find(int p) {
-        while (p != ids[p])
-            p = ids[p];
-        return p;
+        return ids[p];
     }
 
     public boolean connected(int p, int q) {
@@ -42,6 +42,6 @@ public class QuickUnion implements IUnionFind {
     }
 
     public static void main(String[] args) {
-        new UnionFindClient(new QuickUnion()).Run("data/largeUF.txt");
+        new UnionFindClient(new QuickFind()).Run("data/mediumUF.txt");
     }
 }
