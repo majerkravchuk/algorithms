@@ -1,4 +1,4 @@
-package Sorting.Implementations;
+package Sorting;
 
 import java.util.Arrays;
 import edu.princeton.cs.algs4.StdDraw;
